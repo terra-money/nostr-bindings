@@ -1,6 +1,10 @@
+#[cfg(not(feature = "library"))]
 pub mod contract;
+pub mod definitions;
 mod error;
+mod execute;
 pub mod msg;
-pub mod state;
-
-pub use crate::error::ContractError;
+mod query;
+mod state;
+#[cfg(test)]
+mod tests;

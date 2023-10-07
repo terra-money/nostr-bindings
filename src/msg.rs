@@ -1,31 +1,30 @@
 use cosmwasm_schema::{cw_serde, QueryResponses};
 
+use crate::definitions::{SignInfo, UserInfo};
+
 #[cw_serde]
-pub struct InstantiateMsg { }
+pub struct InstantiateMsg {}
 
 #[cw_serde]
 pub enum ExecuteMsg {
-    Bound {
-        nostr_addr: String,
-        nostr_signature: String,
-    },
-    UnBound {
-        nostr_addr: String,
-        nostr_signature: String,
-    },
+    Bound(SignInfo),
+    Unbound(SignInfo),
 }
 
 #[cw_serde]
 #[derive(QueryResponses)]
 pub enum QueryMsg {
-    #[returns(CounterpartyAddrRes)]
-    GetBoundedCounterpartyByNostrAddr(String),
-    
-    #[returns(CounterpartyAddrRes)]
-    GetBoundedCounterpartyByTerraAddr(String),
+    #[returns(UserInfo)]
+    GetUserInfoByNostrAddr { nostr_addr: String },
+
+    #[returns(UserInfo)]
+    GetUserInfoByTerraAddr { terra_addr: String },
+
+    #[returns(Vec<UserInfo>)]
+    GetUsers {
+        limit: Option<u32>,
+        start_after: Option<String>,
+    },
 }
 
-#[cw_serde]
-pub struct CounterpartyAddrRes {
-    pub addr: String,
-}
+pub struct MigrateMsg {}
